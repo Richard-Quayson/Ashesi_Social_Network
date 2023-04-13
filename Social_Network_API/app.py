@@ -7,7 +7,7 @@ from helper import (
     
     valid_request_body, valid_student_id, valid_student_info,
     valid_name, valid_dob, valid_major, valid_email, valid_post,
-    get_post, get_users_in_year_group, get_user_by_name
+    get_post, get_users_in_year_group, get_user_by_name, get_date
     
 )
 
@@ -328,6 +328,9 @@ def retrieve_feed():
     
     if not result_list:
         return jsonify({"error": "No user found with specified value!"}), 404
+    
+    # sort the list based on the time they were posted
+    result_list.sort(key=get_date, reverse=True)
     
     return jsonify(result_list)
 

@@ -405,3 +405,8 @@ def get_user_by_name(name):
             result_list.append(user)
             
     return result_list
+
+
+def get_date(post):
+    
+    return post["date_updated"]
