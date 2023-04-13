@@ -6,7 +6,8 @@ from helper import (
     FIRST_YEAR_GROUP, USERS_COLLECTION, POSTS_COLLECTION,
     
     valid_request_body, valid_student_id, valid_student_info,
-    valid_name, valid_dob, valid_major, valid_email, valid_post
+    valid_name, valid_dob, valid_major, valid_email, valid_post,
+    get_post, get_users_in_year_group, get_user_by_name
     
 )
 
@@ -262,6 +263,13 @@ def retrieve_feed():
     
     # idea: get the value the user entered in the text field
     value = request.args.get("value")
+    posts = POSTS_COLLECTION.get()
+    post_data = list()
+    for post in posts:
+        post_data.append(post.to_dict())
+        
+    if not value:
+        return jsonify(post_data)
     
     # determine the type of the value
     # whether it's firstname, lastname, student_id,
@@ -269,25 +277,60 @@ def retrieve_feed():
     
     if valid_student_id(value):
         key = "student_id"
-    elif valid_name(value):
-        key = "name"
     elif len(value) == 4 and value.isdigit():
         key = "year_group"
     elif valid_email(value):
         key = "email"
     else:
-        key = "description"
+        key = list()
+        if valid_name(value):
+            key.append("name")
+        key.append("description")
+        
+    if type(key) == list:
+        # the key list will always contain description
+        result_list = get_post("description", value)
+        
+        # if name in key list, get corresponding post for name
+        if len(key) > 1:
+            response = get_user_by_name(value)
+            
+            if type(response) == tuple:
+                return response
+            
+            for user in response:
+                user_post = get_post("email", user["email"])
+                result_list.extend(user_post)
     
     # if user attribute detected, get corresponding email and filter post
-    if key == "student_id" or key == "year_group":
-        pass
-    # else if description detected, get corresponding posts with said description
-    elif key == "email" or key == "description":
-        pass
+    elif key == "student_id" or key == "year_group":
+        # if student_id, get the student with the given id
+        if key == "student_id":
+            users_list = list()
+            student_info = USERS_COLLECTION.document(value).get().to_dict()
+            users_list.append(student_info)
+        else:
+            # get users in a year group
+            users_list = get_users_in_year_group(value)
+        
+        result_list = list()
+        # loop through users list and retrieve all posts for said users
+        for user in users_list:
+            result = get_post("email", user["email"])
+            result_list.extend(result)
+            
+    elif key == "email":
+        result_list = get_post(key, value)
+        
     # else, return appropriate response of unrecognisable attribute
     else:
         return jsonify({"error": "Unrecognisable attribute!"}), 404
-    pass
+    
+    if not result_list:
+        return jsonify({"error": "No user found with specified value!"}), 404
+    
+    return jsonify(result_list)
+
     
 if __name__=='__main__':
     social_network.run(debug=True)

@@ -141,7 +141,7 @@ def valid_name(name):
         bool: whether or not the name is valid
     """
        
-    if not str("firstname").isalpha():
+    if not name.isalpha():
         return False
     return True
 
@@ -311,7 +311,6 @@ def valid_post(request):
         return jsonify({"error": "Student's email is not a valid Ashesi email!"}), 400
     
     # ensure that the user with the specified email exists
-    print(get_student_by_email(post_data["email"]))
     result = get_student_by_email(post_data["email"])
     if type(result) == tuple:
         return result
@@ -336,11 +335,12 @@ def valid_post(request):
     return {"data": post_data}
 
 
-def get_post_by_description(content):
+def get_post(key, content):
     """retrieves all posts that had the content specified
 
     Args:
         content (str): the content on which posts are to be filtered
+        key (str): the attribute of post to be used for filtering
 
     Returns:
         list: a list of all posts documents (dict) matching the specified content
@@ -356,9 +356,52 @@ def get_post_by_description(content):
     
     for post in posts:
         post = post.to_dict()
-        
+        print(content)
+        print(post[key])
         # check if post contains content specified
-        if content in post["description"]:
+        if content.strip().lower() in post[key].strip().lower() or content.strip().lower() == post[key].strip().lower():
+            print("I got here!")
             result.append(post)
             
     return result
+
+
+def get_users_in_year_group(year_group):
+    
+    
+    # retrieve users collection
+    users = USERS_COLLECTION.get()
+    
+    if not users:
+        return jsonify({"error": "No student has been registered"}), 400
+    
+    result_list = list()
+    
+    for user in users:
+        user = user.to_dict()
+        student_id = valid_student_id(user["student_id"])
+        year = student_id["year_group"]
+        if year_group == year:
+            result_list.append(user)
+    
+    return result_list
+
+
+def get_user_by_name(name):
+    
+    # retrieve users collection
+    users = USERS_COLLECTION.get()
+    
+    if not users:
+        return jsonify({"error": "No student has been registered"}), 400
+    
+    result_list = list()
+    
+    for user in users:
+        user = user.to_dict()
+        if user["firstname"].lower() == name.lower() or user["firstname"].lower().startswith(name.lower()):
+            result_list.append(user)
+        elif user["lastname"].lower() == name.lower() or user["lastname"].lower().startswith(name.lower()):
+            result_list.append(user)
+            
+    return result_list
