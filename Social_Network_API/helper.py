@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
-from flask import jsonify
+from flask import Flask, jsonify
+from flask_mail import Mail, Message
 from firebase_admin import credentials, firestore, initialize_app
 
 
@@ -9,9 +10,20 @@ cred = credentials.Certificate("key.json")
 app = initialize_app(cred)
 database = firestore.client()
 
-# collection reference
+# firebase collection reference
 USERS_COLLECTION = database.collection("users")
 POSTS_COLLECTION = database.collection("posts")
+
+# creating flask app
+social_network = Flask(__name__)
+
+# initialise Flask-Mail
+social_network.config['MAIL_SERVER'] = 'smtp.gmail.com'
+social_network.config['MAIL_PORT'] = 465
+social_network.config['MAIL_USERNAME'] = 'projectile.webgeeks@gmail.com'
+social_network.config['MAIL_PASSWORD'] = 'mgsyuknntllkmdel'
+social_network.config['MAIL_USE_SSL'] = True
+mail = Mail(social_network)
 
 # first year group in Ashesi
 FIRST_YEAR_GROUP = 2002
@@ -271,7 +283,7 @@ def valid_student_info(request, unique_keys_list):
     return {"data": student_info}
 
 
-def get_student_by_email(email):
+def get_user_by_email(email):
     
     # retrieve students data
     data = USERS_COLLECTION.get()
@@ -311,7 +323,7 @@ def valid_post(request):
         return jsonify({"error": "Student's email is not a valid Ashesi email!"}), 400
     
     # ensure that the user with the specified email exists
-    result = get_student_by_email(post_data["email"])
+    result = get_user_by_email(post_data["email"])
     if type(result) == tuple:
         return result
         
@@ -356,11 +368,8 @@ def get_post(key, content):
     
     for post in posts:
         post = post.to_dict()
-        print(content)
-        print(post[key])
         # check if post contains content specified
-        if content.strip().lower() in post[key].strip().lower() or content.strip().lower() == post[key].strip().lower():
-            print("I got here!")
+        if content.strip().lower() in post[key].strip().lower():
             result.append(post)
             
     return result
@@ -410,3 +419,44 @@ def get_user_by_name(name):
 def get_date(post):
     
     return post["date_updated"]
+
+
+def get_all_user_emails():
+    
+    # retrieve users collection
+    users = USERS_COLLECTION.get()
+    
+    if not users:
+        return jsonify({"error": "No student has been registered"}), 400
+    
+    result_list = list()
+    
+    for user in users:
+        user = user.to_dict()
+        result_list.append(user["email"])
+    
+    return result_list
+
+
+def send_email(post_data):
+
+    # retrieve all user emails
+    recipients = get_all_user_emails()
+
+    # get user who made the post
+    user = get_user_by_email(post_data["email"])
+
+    message = Message(
+        "New post from " + user["firstname"] + " " + user["lastname"], 
+        sender="ashesi.social@ashesi.edu.gh",
+        recipients=recipients
+        )
+    message.body = user["firstname"] + " " + user["lastname"] + " has made a new post on Ashesi Social!\n"
+    message.body += "Post content: " + post_data["description"] + "\n"
+    message.body += "Date created: " + post_data["date_updated"] + "\n\n"
+    message.body += "Regards, \n Ashesi Social Team."
+    
+    if mail.send(message):
+        return "Email sent!"
+    
+    return "Email not sent!", 400

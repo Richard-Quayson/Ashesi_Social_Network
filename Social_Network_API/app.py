@@ -1,18 +1,16 @@
 import json
-from flask import Flask, jsonify, request
+from flask import jsonify, request
 
 # import helper methods and other essential data
 from helper import (
     FIRST_YEAR_GROUP, USERS_COLLECTION, POSTS_COLLECTION,
+    social_network, mail,
     
     valid_request_body, valid_student_id, valid_student_info,
     valid_name, valid_dob, valid_major, valid_email, valid_post,
-    get_post, get_users_in_year_group, get_user_by_name, get_date
-    
+    get_post, get_users_in_year_group, get_user_by_name, get_date,
+    send_email
 )
-
-# creating flask app
-social_network = Flask(__name__)
 
 
 # _______________________________________________________________________________________________
@@ -244,11 +242,12 @@ def create_post():
     if post_data["post_image"]:
         post_image = request.files()
         
-        
     POSTS_COLLECTION.document().set(post_data)
     
+    # notify all users
+    send_email(post_data)
+    
     return jsonify(post_data)
-
 
 
 # ________________________________________________________________________________________________
@@ -292,7 +291,6 @@ def retrieve_feed():
     if type(key) == list:
         # the key list will always contain description
         result_list = get_post("description", value)
-        
         # if name in key list, get corresponding post for name
         if len(key) > 1:
             response = get_user_by_name(value)
@@ -303,7 +301,6 @@ def retrieve_feed():
             for user in response:
                 user_post = get_post("email", user["email"])
                 result_list.extend(user_post)
-    
     # if user attribute detected, get corresponding email and filter post
     elif key == "student_id" or key == "year_group":
         # if student_id, get the student with the given id
@@ -336,6 +333,6 @@ def retrieve_feed():
     
     return jsonify(result_list)
 
-    
+
 if __name__=='__main__':
     social_network.run(debug=True)
