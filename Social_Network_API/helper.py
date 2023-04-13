@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from re import search
 from flask import Flask, jsonify
 from flask_mail import Mail, Message
 from firebase_admin import credentials, firestore, initialize_app
@@ -82,7 +83,7 @@ def valid_keys(object_data, expected_keys):
     
     if num_correct_keys == len(expected_keys):
         
-        # if more keys are persent, flag the presence of extra keys
+        # if more keys are present, flag the presence of extra keys
         if len(object_data) > len(expected_keys):
             result["message"] = f"Extra attributes identified. Expected keys are: {expected_keys}"
         else:
@@ -167,10 +168,9 @@ def valid_email(email):
     Returns:
         bool: whether or not the email is valid
     """
-    
-    if not email.endswith("@ashesi.edu.gh"):
-        return False
-    return True
+    pattern = r"^[^0-9!@#$%^&*(+=)\\[\].></{}`]\w+([\.-_]?\w+)*@ashesi\.edu\.gh$"
+    regex_match = search(pattern, email)
+    return bool(regex_match)
 
 
 def valid_dob(dob):
@@ -191,6 +191,7 @@ def valid_major(major):
     if major.upper() in ASHESI_MAJORS:
         return True
     return False
+
 
 def valid_image(filename):
     """determines whether or not a given filename is an image

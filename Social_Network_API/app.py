@@ -30,7 +30,7 @@ def register_user():
     
     return jsonify(student_info), 201
 
-
+ 
 # ______________________________________________________________________________________________
 # EDIT STUDENT PROFILE
 @social_network.route("/users/profile/edit/<student_id>/", methods=["PATCH"])
@@ -301,6 +301,7 @@ def retrieve_feed():
             for user in response:
                 user_post = get_post("email", user["email"])
                 result_list.extend(user_post)
+    
     # if user attribute detected, get corresponding email and filter post
     elif key == "student_id" or key == "year_group":
         # if student_id, get the student with the given id
