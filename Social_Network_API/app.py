@@ -327,7 +327,7 @@ def retrieve_feed():
         return jsonify({"error": "Unrecognisable attribute!"}), 404
     
     if not result_list:
-        return jsonify({"error": "No user found with specified value!"}), 404
+        return jsonify({"error": "No post found with specified value!"}), 404
     
     # sort the list based on the time they were posted
     result_list.sort(key=get_date, reverse=True)
