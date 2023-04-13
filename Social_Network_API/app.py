@@ -269,6 +269,8 @@ def retrieve_feed():
         post_data.append(post.to_dict())
         
     if not value:
+        # sort the list based on the time they were posted
+        post_data.sort(key=get_date, reverse=True)
         return jsonify(post_data)
     
     # determine the type of the value

@@ -329,7 +329,7 @@ def valid_post(request):
     datetime_formatted = current_datetime.strftime("%d/%m/%Y %H:%M:%S")
     
     post_data["date_created"] = datetime_formatted
-    post_data["date_upated"] = datetime_formatted
+    post_data["date_updated"] = datetime_formatted
     
     # if all conditions are met, return the data
     return {"data": post_data}
