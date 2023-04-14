@@ -4,7 +4,7 @@ from flask import jsonify, request
 # import helper methods and other essential data
 from helper import (
     FIRST_YEAR_GROUP, USERS_COLLECTION, POSTS_COLLECTION,
-    social_network, mail,
+    social_network,
     
     valid_request_body, valid_student_id, valid_student_info,
     valid_name, valid_dob, valid_major, valid_email, valid_post,
