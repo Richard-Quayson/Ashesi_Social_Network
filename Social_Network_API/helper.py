@@ -22,7 +22,7 @@ social_network = Flask(__name__)
 social_network.config['MAIL_SERVER'] = 'smtp.gmail.com'
 social_network.config['MAIL_PORT'] = 465
 social_network.config['MAIL_USERNAME'] = 'projectile.webgeeks@gmail.com'
-social_network.config['MAIL_PASSWORD'] = 'mgsyuknntllkmdel'
+social_network.config['MAIL_PASSWORD'] = 'wnayotwsrpqlalee'
 social_network.config['MAIL_USE_SSL'] = True
 mail = Mail(social_network)
 
@@ -451,7 +451,8 @@ def send_email(post_data):
         "New post from " + user["firstname"] + " " + user["lastname"], 
         sender="ashesi.social@ashesi.edu.gh",
         recipients=recipients
-        )
+    )
+    
     message.body = user["firstname"] + " " + user["lastname"] + " has made a new post on Ashesi Social!\n"
     message.body += "Post content: " + post_data["description"] + "\n"
     message.body += "Date created: " + post_data["date_updated"] + "\n\n"
