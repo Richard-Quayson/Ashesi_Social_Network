@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'login_form.dart';
+import 'LoginForm.dart';
 import 'main.dart';
 
 class RegisterForm extends StatefulWidget {

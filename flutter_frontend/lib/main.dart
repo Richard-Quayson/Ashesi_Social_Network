@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'top_nav.dart';
-import 'side_nav.dart';
+import 'TopNavigationBar.dart';
+import 'SideNavigationBar.dart';
 
 void main() {
   runApp(const MyApp());

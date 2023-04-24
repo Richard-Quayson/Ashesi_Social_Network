@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/main.dart';
-import 'register.dart';
+import 'RegisterStudentForm.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);

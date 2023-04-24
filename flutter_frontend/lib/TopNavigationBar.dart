@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/side_nav.dart';
-import 'login_form.dart';
-import 'register.dart';
+import 'package:flutter_frontend/SideNavigationBar.dart';
+import 'LoginForm.dart';
+import 'RegisterStudentForm.dart';
 
 class TopNavBar extends StatefulWidget {
   const TopNavBar({super.key});

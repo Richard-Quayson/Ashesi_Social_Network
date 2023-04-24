@@ -7,47 +7,97 @@ class SideNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.1, // 10% of screen width
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.blue,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Image.asset(
-            'assets/images/active_profile.png',
-            width: 40,
-            height: 40,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Image.asset(
+                'assets/images/active_profile.png',
+                width: 40,
+                height: 40,
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+              const Text(
+                'Profile',
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          Text(
-            'Profile',
-            style: TextStyle(color: Colors.white),
+          const SizedBox(
+            height: 20,
           ),
-          Image.asset(
-            'assets/images/inactive_users.png',
-            width: 40,
-            height: 40,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/inactive_posts.png',
+                width: 40,
+                height: 40,
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+              const Text(
+                'Posts',
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          Text(
-            'Users',
-            style: TextStyle(color: Colors.white),
+          const SizedBox(
+            height: 20,
           ),
-          Image.asset(
-            'assets/images/inactive_posts.png',
-            width: 40,
-            height: 40,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/inactive_users.png',
+                width: 40,
+                height: 40,
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+              const Text(
+                'Users',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
           ),
-          Text(
-            'Posts',
-            style: TextStyle(color: Colors.white),
+          const SizedBox(
+            height: 20,
           ),
-          Image.asset(
-            'assets/images/inactive_favourites.png',
-            width: 40,
-            height: 40,
-          ),
-          Text(
-            'Favourites',
-            style: TextStyle(color: Colors.white),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/inactive_favourites.png',
+                width: 40,
+                height: 40,
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+              const Text(
+                'Favourites',
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ],
       ),
