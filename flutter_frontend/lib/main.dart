@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'top_nav.dart';
+import 'side_nav.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,13 +14,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Ashesi Social Network',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blue, 
+        textSelectionTheme:
+            const TextSelectionThemeData(cursorColor: Colors.black),
       ),
       home: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: TopNavBar(),
-        ),
+        // appBar: AppBar(
+        //   title: Text('Side Navigation Bar'),
+        // ),
+        // body: TopNavBar(),
+        body: SideNavigationBar(),
       ),
     );
   }
