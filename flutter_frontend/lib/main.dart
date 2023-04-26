@@ -23,16 +23,7 @@ class MyApp extends StatelessWidget {
             const TextSelectionThemeData(cursorColor: Colors.black),
       ),
       home: Scaffold(
-        // appBar: AppBar(
-        //   title: Text('Side Navigation Bar'),
-        // ),
-        // body: TopNavBar(),
-        // body: ActiveUsersSideNavigationBar(),
-        // body: SearchBar(),
-        // body: UserDashboard(),
-        body: PostForm(),
-        // body: UserList(),
-        // body: Feed(),
+        body: TopNavBar(),
       ),
     );
   }

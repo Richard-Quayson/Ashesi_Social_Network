@@ -129,7 +129,11 @@ def valid_student_id(student_id):
         dict: a dictionary containing user_id (the first four values of a student id)
         and year_group (the year group of the student)
     """
-    
+
+    # ensure the student id is a string
+    if type(student_id) != str:
+        return False
+
     # ensure that the student id is of length 8
     if(len(student_id)) != 8:
         return False
@@ -168,8 +172,12 @@ def valid_email(email):
     Returns:
         bool: whether or not the email is valid
     """
-    pattern = r"^[^0-9!@#$%^&*(+=)\\[\].></{}`]\w+([\.-_]?\w+)*@ashesi\.edu\.gh$"
-    regex_match = search(pattern, email)
+    # due to issues sending email broadcast to ashesi.edu.gh emails, we have
+    # decided to allow all emails to be valid once they follow the regular convention
+    # to test for only ashesi email patterns, parse the ashesi_pattern instead
+    ashesi_pattern = r"^[^0-9!@#$%^&*(+=)\\[\].></{}`]\w+([\.-_]?\w+)*@ashesi\.edu\.gh$"
+    regular_pattern = r"^[^0-9!@#$%^&*(+=)\\[\].></{}`]\w+([\.-_]?\w+)*@([a-z\d-]+)\.([a-z]{2,10})(\.[a-z]{2,10})?$"
+    regex_match = search(regular_pattern, email)
     return bool(regex_match)
 
 
@@ -203,7 +211,7 @@ def valid_image(filename):
         bool: whether or not the file is an image
     """
     
-    if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')):
+    if filename.lower().endswith(('.png', '.jpg', '.jpeg' )):
         return True
     return False
 
@@ -279,6 +287,10 @@ def valid_student_info(request, unique_keys_list):
     unique_data = unique_keys(unique_keys_list, students_data, student_info)
     if len(unique_data) > 0:
         return jsonify(unique_data), 400
+
+    # append favourite_posts and read_posts to student_info
+    student_info["favourite_posts"] = list()
+    student_info["read_posts"] = list()
     
     # if all conditions are satisfied, return student info
     return {"data": student_info}
@@ -349,8 +361,7 @@ def valid_post(request):
 
 
 def get_post(key, content):
-    """retrieves all posts that had the content specified
-
+    """retrieves all posts that had the content spe b
     Args:
         content (str): the content on which posts are to be filtered
         key (str): the attribute of post to be used for filtering

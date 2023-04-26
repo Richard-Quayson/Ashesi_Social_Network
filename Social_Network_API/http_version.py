@@ -2,6 +2,7 @@ import json
 from flask import jsonify, request
 import os
 from firebase_admin import storage
+import functions_framework
 
 # import helper methods and other essential data
 from helper import (
@@ -11,14 +12,37 @@ from helper import (
     valid_request_body, valid_student_id, valid_student_info,
     valid_name, valid_dob, valid_major, valid_email, valid_post,
     get_post, get_users_in_year_group, get_user_by_name, get_date,
-    get_user_by_email, send_email
+    send_email
 )
+
+
+# creating an http function to handle the requests to the endpoints
+@functions_framework.http
+def social_network_api(request):
+    if "users" in request.path:
+
+        if request.method == "POST" and "profile" in request.path:
+            return register_user(request)
+        elif request.method == "PATCH" and "profile" in request.path:
+            return edit_profile(request)
+        elif request.method == "GET":
+            return retrieve_students(request)
+
+        elif request.method == "POST" and "posts" in request.path:
+            return create_post(request)
+        elif request.method == "GET" and "posts" in request.path:
+            return retrieve_feed(request)
+        
+        elif request.method == "POST" and "favourites" in request.path:
+            return favourites(request)
+
+    else:
+        return jsonify({"message": "Invalid endpoint!"}), 404
 
 
 # _______________________________________________________________________________________________
 # REGISTER A STUDENT AS A USER
-@social_network.route("/users/profile/create/", methods=["POST"])
-def register_user():
+def register_user(request):
     
     # validate student details in request
     unique_keys = ["student_id", "email"]
@@ -35,9 +59,11 @@ def register_user():
  
 # ______________________________________________________________________________________________
 # EDIT STUDENT PROFILE
-@social_network.route("/users/profile/edit/<student_id>/", methods=["PATCH"])
-def edit_profile(student_id):
+def edit_profile(request):
     
+    # get student id from request path
+    student_id = request.path.split("/")[-1]
+
     # ensure that the student_id specified is valid
     valid_id = valid_student_id(student_id)
     # if not syntactically correct, return appropriate message
@@ -94,8 +120,7 @@ def edit_profile(student_id):
 
 # _______________________________________________________________________________________________
 # VIEW STUDENT PROFILE
-@social_network.route("/users/profile/view/", methods=["GET"])
-def get_student_profile():
+def retrieve_students(request):
     """uses all specified arguments (attributes of student) parsed for filtering
     matching students and returns the result. If no attribute is parsed, it retrieves
     all students. If any exception occur, it returns an appropriate message of the exception
@@ -229,9 +254,7 @@ def get_student_profile():
 
 # _________________________________________________________________________________________________
 # CREATE POST
-@social_network.route("/users/posts/create/", methods=["POST"])
-def create_post():
-    
+def create_post(request):
     
     # ensure that post_data is valid
     result = valid_post(request)
@@ -255,8 +278,7 @@ def create_post():
 
 # ________________________________________________________________________________________________
 # VIEW FEED
-@social_network.route("/users/posts/feed/", methods=["GET"])
-def retrieve_feed():
+def retrieve_feed(request):
     
     # attributes to be used include:
     # name, either first or last
@@ -268,16 +290,11 @@ def retrieve_feed():
     posts = POSTS_COLLECTION.get()
     post_data = list()
     for post in posts:
-        # get the author and append their information to the result list
-        post = post.to_dict()
-        get_author = get_user_by_email(post["email"])
-        post["name"] = get_author["firstname"] + " " + get_author["lastname"]
-        post_data.append(post)
+        post_data.append(post.to_dict())
         
     if not value:
         # sort the list based on the time they were posted
         post_data.sort(key=get_date, reverse=True)
-        
         return jsonify(post_data)
     
     # determine the type of the value
@@ -340,14 +357,11 @@ def retrieve_feed():
     # sort the list based on the time they were posted
     result_list.sort(key=get_date, reverse=True)
     
-    print(result_list)
-    
     return jsonify(result_list)
 
 
 # ________________________________________________________________________________________________
 # ADD POST TO FAVOURITES
-@social_network.route("/users/posts/favourites/", methods=["POST", "DELETE"])
 def favourites():
 
     post = request.args.get("post_id")
@@ -373,7 +387,6 @@ def favourites():
 
 # ________________________________________________________________________________________________
 # TEST IMAGE UPLOAD
-@social_network.route("/users/posts/image/", methods=["POST"])
 def upload_image():
     # Get the user ID from the request data
     user_id = request.form.get('user_id')

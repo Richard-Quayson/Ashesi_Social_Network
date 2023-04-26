@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend/SideNavigationBar.dart';
 import 'SearchBar.dart';
 import 'SideNavigationBar.dart';
+import 'PostForm.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -23,21 +24,9 @@ class _FeedState extends State<Feed> {
     fetchPosts();
   }
 
-  // Future<Map<String, dynamic>> getUser(String email) async {
-  //   final response = await http.get(
-  //       Uri.parse('http://localhost:5000/users/profile/view/?email=$email'));
-
-  //   if (response.statusCode == 200) {
-  //     final user = Map<String, dynamic>.from(json.decode(response.body));
-  //     return user[0];
-  //   } else {
-  //     throw Exception('Failed to fetch user');
-  //   }
-  // }
-
   Future<void> fetchPosts() async {
     final response =
-        await http.get(Uri.parse('http://localhost:5000/users/posts/feed/'));
+        await http.get(Uri.parse('https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/feed/'));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -171,6 +160,16 @@ class _FeedState extends State<Feed> {
             ),
           ],
         ),
+        
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PostForm()),
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
