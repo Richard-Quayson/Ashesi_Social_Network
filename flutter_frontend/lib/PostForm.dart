@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_frontend/Feed.dart';
 import 'package:flutter_frontend/UserList.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -6,49 +7,50 @@ import 'package:flutter_frontend/main.dart';
 import 'RegisterStudentForm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
+class PostForm extends StatefulWidget {
+  const PostForm({Key? key}) : super(key: key);
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _PostFormState createState() => _PostFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _PostFormState extends State<PostForm> {
   final _formKey = GlobalKey<FormState>();
-  String _studentID = '';
+  String _email = '';
+  String _description = '';
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement login logic
-      print('Logging in with Student ID: $_studentID');
+      print("Email: $_email");
+      print("Description: $_description");
     }
 
     _formKey.currentState!.save();
-    final path =
-        "http://localhost:5000/users/profile/view?student_id=$_studentID";
-    final response = await http.get(
+    final path = "http://localhost:5000/users/posts/create/";
+    final response = await http.post(
       Uri.parse(path),
-      headers: <String, String>{
+      headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
+      body: jsonEncode({
+        'email': _email,
+        'description': _description,
+      }),
     );
 
     if (response.statusCode == 200) {
-      // create session variable
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // await prefs.setString('student_id', _studentID);
-
       _formKey.currentState!.reset();
       final jsonResponse = jsonDecode(response.body);
       print(jsonResponse);
+      print("Form submitted successfully!");
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => UserList()),
+        MaterialPageRoute(builder: (context) => Feed()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Form submitted successfully!"),
+          content: Text("Post made successfully!"),
         ),
       );
     } else {
@@ -80,22 +82,23 @@ class _LoginFormState extends State<LoginForm> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MyApp(),
-                            ),
-                          );
-                        },
-                        child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: Image.asset(
-                            'assets/images/logo.png',
-                            width: 100,
-                            height: 100,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Feed(),
                           ),
-                        )),
+                        );
+                      },
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          width: 100,
+                          height: 100,
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 32),
                     const Text(
                       'Ashesi Social Network',
@@ -109,14 +112,14 @@ class _LoginFormState extends State<LoginForm> {
                     const SizedBox(height: 32),
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Student ID', // set the label text
+                        labelText: 'Email', // set the label text
                         labelStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 16, horizontal: 16),
-                        hintText: 'Enter your student ID',
+                        hintText: 'Enter your email',
                         filled: true,
                         fillColor: Colors.grey.shade100,
                         border: OutlineInputBorder(
@@ -126,12 +129,40 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your Student ID';
+                          return 'Please enter your email';
                         }
                         return null;
                       },
                       onChanged: (value) {
-                        _studentID = value;
+                        _email = value;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Description', // set the label text
+                        labelStyle: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 16),
+                        hintText: 'Enter a description',
+                        filled: true,
+                        fillColor: Colors.grey.shade100,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a description';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        _description = value;
                       },
                     ),
                     const SizedBox(height: 32),
@@ -145,46 +176,12 @@ class _LoginFormState extends State<LoginForm> {
                             vertical: 8,
                           ),
                           child: Text(
-                            'LOGIN',
+                            'POST',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterForm(),
-                          ),
-                        );
-                      },
-                      child: const MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: Text.rich(
-                          TextSpan(
-                            text: 'Don\'t have an account? Sign up ',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: 'here',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),

@@ -9,7 +9,7 @@ from helper import (
     valid_request_body, valid_student_id, valid_student_info,
     valid_name, valid_dob, valid_major, valid_email, valid_post,
     get_post, get_users_in_year_group, get_user_by_name, get_date,
-    send_email
+    get_user_by_email, send_email
 )
 
 
@@ -265,11 +265,16 @@ def retrieve_feed():
     posts = POSTS_COLLECTION.get()
     post_data = list()
     for post in posts:
-        post_data.append(post.to_dict())
+        # get the author and append their information to the result list
+        post = post.to_dict()
+        get_author = get_user_by_email(post["email"])
+        post["name"] = get_author["firstname"] + " " + get_author["lastname"]
+        post_data.append(post)
         
     if not value:
         # sort the list based on the time they were posted
         post_data.sort(key=get_date, reverse=True)
+        
         return jsonify(post_data)
     
     # determine the type of the value
@@ -331,6 +336,8 @@ def retrieve_feed():
     
     # sort the list based on the time they were posted
     result_list.sort(key=get_date, reverse=True)
+    
+    print(result_list)
     
     return jsonify(result_list)
 
