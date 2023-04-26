@@ -79,7 +79,9 @@ by running the flutter application in the terminal using any browser as an emula
 
 
 ## Program Overview:
-For an overview on the project, check the file task_instructions.pdf the main tree.
+For an overview on the project, check the file task_instructions.pdf in the main tree.
+
+## UI for Flutter:
 Find the Figma design for the Flutter [here.]()
 
 ## Future updates:
