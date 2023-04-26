@@ -25,7 +25,7 @@ class _UserListState extends State<UserList> {
 
   Future<void> fetchUsers() async {
     final response =
-        await http.get(Uri.parse('http://localhost:5000/users/profile/view/'));
+        await http.get(Uri.parse('https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/profile/view/'));
 
     if (response.statusCode == 200) {
       setState(() {

@@ -26,7 +26,7 @@ class _PostFormState extends State<PostForm> {
     }
 
     _formKey.currentState!.save();
-    final path = "http://localhost:5000/users/posts/create/";
+    final path = "https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/create/";
     final response = await http.post(
       Uri.parse(path),
       headers: {

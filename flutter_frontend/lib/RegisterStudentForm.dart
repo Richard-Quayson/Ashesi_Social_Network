@@ -45,7 +45,7 @@ class _RegisterFormState extends State<RegisterForm> {
     }
 
     _formKey.currentState!.save();
-    final path = "http://localhost:5000/users/profile/create/";
+    final path = "https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/profile/create/";
     final response = await http.post(
       Uri.parse(path),
       headers: {

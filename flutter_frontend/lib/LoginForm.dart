@@ -25,7 +25,7 @@ class _LoginFormState extends State<LoginForm> {
 
     _formKey.currentState!.save();
     final path =
-        "http://localhost:5000/users/profile/view?student_id=$_studentID";
+        "https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/profile/view?student_id=$_studentID";
     final response = await http.get(
       Uri.parse(path),
       headers: <String, String>{
@@ -35,9 +35,6 @@ class _LoginFormState extends State<LoginForm> {
     );
 
     if (response.statusCode == 200) {
-      // create session variable
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // await prefs.setString('student_id', _studentID);
 
       _formKey.currentState!.reset();
       final jsonResponse = jsonDecode(response.body);
