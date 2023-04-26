@@ -1,5 +1,7 @@
 import json
 from flask import jsonify, request
+import os
+from firebase_admin import storage
 
 # import helper methods and other essential data
 from helper import (
@@ -233,6 +235,7 @@ def create_post():
     
     # ensure that post_data is valid
     result = valid_post(request)
+    
     if type(result) == tuple:
         return result
         
@@ -340,6 +343,55 @@ def retrieve_feed():
     print(result_list)
     
     return jsonify(result_list)
+
+
+# ________________________________________________________________________________________________
+# ADD POST TO FAVOURITES
+@social_network.route("/users/posts/favourites/", methods=["POST", "DELETE"])
+def favourites():
+
+    post = request.args.get("post_id")
+    user = request.args.get("user_id")
+
+    if post is None or user is None:
+        return jsonify({"message": "Invalid request!"}), 400
+
+    # get the user with the specified id and update their favourite posts
+    user_data = USERS_COLLECTION.document(user).get().to_dict()
+
+    if post not in user_data["favourite_posts"]:
+        user_data["favourite_posts"].append(post)       
+    else:
+        user_data["favourite_posts"].remove(post)
+    
+    # write updated data to database
+    USERS_COLLECTION.document(user).set(user_data)
+    
+    # return updated user data    
+    return jsonify(user_data)
+
+
+# ________________________________________________________________________________________________
+# TEST IMAGE UPLOAD
+@social_network.route("/users/posts/image/", methods=["POST"])
+def upload_image():
+    # Get the user ID from the request data
+    user_id = request.form.get('user_id')
+    
+    # Get the uploaded image from the request files
+    uploaded_file = request.files['file']
+    
+    # Set the filename for the image using the user's ID
+    filename = user_id + os.path.splitext(uploaded_file.filename)[1]
+    
+    # Upload the image to Firebase Storage
+    bucket = storage.bucket()
+    blob = bucket.blob(filename)
+    blob.upload_from_file(uploaded_file)
+    
+    # Return a response with the URL of the uploaded image
+    url = blob.public_url
+    return f"Image uploaded successfully. URL: {url}"
 
 
 if __name__=='__main__':
