@@ -4,25 +4,25 @@ The Ashesi_Social_Network project provide an API that uses a firebase database, 
 The API provides functions that allow users to register onto a social media application, make posts
 and add posts to their favourites. The API provides **functionalities** that supports the following:
 1. Register as a user -> POST.
-**Endpoint: ** .../users/profile/create/
+**Endpoint:** .../users/profile/create/
 
 2. Edit user profile -> PATCH.
-**Endpoint: ** .../users/profile/edit/<int: student_id>/
+**Endpoint:** .../users/profile/edit/<int: student_id>/
 
 3. Filter to retrieve user(s) information by any attributes of a user -> GET.
-**Endpoint: ** .../users/profile/view/?<attribute_name>=<attribute_value>
+**Endpoint:** .../users/profile/view/?<attribute_name>=<attribute_value>
 Eg. .../users/profile/view/?firstname=richard
 
 4. Create a post. After post is created, all registered users are notified through an email broadcast -> POST.
-**Endpoint: ** .../users/posts/create/
+**Endpoint:** .../users/posts/create/
 
 5. Filter feed by either the content, the name, id or email of the user who made it -> GET.
-**Endpoint: ** .../users/posts/feed/?value=<attribute_value>
+**Endpoint:** .../users/posts/feed/?value=<attribute_value>
 Eg. .../users/posts/feed/?value=project
 Eg. .../users/posts/feed/?value=richard.quayson@ashesi.edu.gh
 
 6. Add / remove a post from your list of favourites post -> POST.
-**Endpoint: ** .../users/posts/favourites/?user_id=<user's_id>&post_id=<post's id>
+**Endpoint:** .../users/posts/favourites/?user_id=<user's_id>&post_id=<post's id>
 Eg. .../users/posts/favourites/?user_id=29962024&post_id=BG3NKZatn024SJRlLO4j
 
 
