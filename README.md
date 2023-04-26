@@ -80,14 +80,14 @@ by running the flutter application in the terminal using any browser as an emula
 
 ## Program Overview:
 For an overview on the project, check the file task_instructions.pdf the main tree.
-
+Find the Figma design for the Flutter [here.]()
 
 ## Future updates:
 Future updates will:
 - [ ] Deploy flutter application.
 - [ ] Improve validation of student's information.
 - [ ] Integrate filter system for user and post with search bar created in the flutter project.
-- [ ] Provide endpoints and corresponding dart files for tracking read and unread posts by users [🙂].
+- [ ] Provide endpoints and corresponding dart files for tracking read and unread posts by users 🙂.
 - [ ] Improve runtime filter for retrieving user and post information.
 
 
