@@ -7,7 +7,7 @@ and add posts to their favourites. The API provides **functionalities** that sup
 **Endpoint:** .../users/profile/create/
 
 2. Edit user profile -> PATCH.
-**Endpoint:** .../users/profile/edit/<int: student_id>/
+\n**Endpoint:** .../users/profile/edit/<int: student_id>/
 
 3. Filter to retrieve user(s) information by any attributes of a user -> GET.
 **Endpoint:** .../users/profile/view/?<attribute_name>=<attribute_value>
