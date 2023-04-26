@@ -70,8 +70,6 @@ the functionaities listed above. It uses a firebase database for storing informa
 The http version has been deployed to google cloud as an http function and can be tested using any HTTP client like 
 [Postman](https://www.postman.com/) at this [address](https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/feed)
 
-You can check tests performed on the API in the test_result.pdf in the Social_Network_API folder.
-
 ### flutter_frontend
 This folder contains a Flutter project that creates a web application to consum the API defined in the Social_Network_API. The dart
 files have been defined in the lib folder. The flutter project has been linked to the deployed http version of the API and can be tested
@@ -79,7 +77,7 @@ by running the flutter application in the terminal using any browser as an emula
 
 
 ## Program Overview:
-For an overview on the project, check the file task_instructions.pdf in the main tree.
+For an overview on the project, check the file task_instructions.pdf in the main tree. Also, you can check tests performed on the API in the test_result.pdf in the main tree.
 
 ## UI for Flutter:
 Find the Figma design for the Flutter [here.]()
