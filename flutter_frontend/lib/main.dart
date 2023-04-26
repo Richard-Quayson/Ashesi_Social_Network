@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/PostForm.dart';
+import 'package:flutter_frontend/SearchBar.dart';
 import 'TopNavigationBar.dart';
 import 'SideNavigationBar.dart';
+import 'UserList.dart';
+import 'Feed.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +27,12 @@ class MyApp extends StatelessWidget {
         //   title: Text('Side Navigation Bar'),
         // ),
         // body: TopNavBar(),
-        body: SideNavigationBar(),
+        // body: ActiveUsersSideNavigationBar(),
+        // body: SearchBar(),
+        // body: UserDashboard(),
+        body: PostForm(),
+        // body: UserList(),
+        // body: Feed(),
       ),
     );
   }

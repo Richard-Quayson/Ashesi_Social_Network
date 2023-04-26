@@ -37,30 +37,30 @@ class _TopNavBarState extends State<TopNavBar> {
                   Row(
                     children: [
 
-                      const SizedBox(width: 16),
-                      Container(
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Colors.blue.shade900, width: 1),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SideNavigationBar()),
-                            );
-                          },
-                          child: const Text(
-                            'Side Bar',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // const SizedBox(width: 16),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //     border:
+                      //         Border.all(color: Colors.blue.shade900, width: 1),
+                      //     borderRadius: BorderRadius.circular(5),
+                      //   ),
+                      //   child: TextButton(
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) =>
+                      //                 const SideNavigationBar()),
+                      //       );
+                      //     },
+                      //     child: const Text(
+                      //       'Side Bar',
+                      //       style: TextStyle(
+                      //         color: Colors.black,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
 
                       // if (!loggedIn)
                       //   TextButton.icon(

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -19,28 +21,78 @@ class _RegisterFormState extends State<RegisterForm> {
   String _firstName = '';
   String _lastName = '';
   String _email = '';
-  final TextEditingController _dateOfBirth = TextEditingController();
+  final TextEditingController _dateOfBirth = TextEditingController(
+      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   String _major = 'BA';
   bool _isCampusResident = false;
   String _bestFood = '';
   String _bestMovie = '';
-  File? _profileImage;
+  // File? _profileImage;
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       // TODO: Implement registration logic
-      print('Registering with Student ID: $_studentID');
       print('Registering with Student ID: $_studentID');
       print('First Name: $_firstName');
       print('Last Name: $_lastName');
       print('Email: $_email');
-      print('Date of Birth: $_dateOfBirth');
+      print('Date of Birth: ${_getDateOfBirth()}');
       print('Major: $_major');
       print('Campus Resident: $_isCampusResident');
       print('Best Food: $_bestFood');
       print('Best Movie: $_bestMovie');
-      print('Profile Image: $_profileImage');
+      // print('Profile Image: $_profileImage');
     }
+
+    _formKey.currentState!.save();
+    final path = "http://localhost:5000/users/profile/create/";
+    final response = await http.post(
+      Uri.parse(path),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode({
+        'student_id': _studentID,
+        'firstname': _firstName,
+        'lastname': _lastName,
+        'email': _email,
+        'dob': _getDateOfBirth()!,
+        'major': _major,
+        'campus_resident': _isCampusResident.toString(),
+        'best_food': _bestFood,
+        'best_movie': _bestMovie,
+        // 'profile_image': _profileImage,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      _formKey.currentState!.reset();
+      // registration successful, navigate to login page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginForm()),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Form submitted successfully!"),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.body),
+        ),
+      );
+    }
+  }
+
+  String? _getDateOfBirth() {
+    final dateOfBirth = _dateOfBirth.text.trim();
+    if (dateOfBirth.isEmpty) {
+      return null;
+    }
+    return dateOfBirth;
   }
 
   final List<DropdownMenuItem<String>> _majorDropdownItems = [
