@@ -405,7 +405,3 @@ def upload_image():
     # Return a response with the URL of the uploaded image
     url = blob.public_url
     return f"Image uploaded successfully. URL: {url}"
-
-
-if __name__=='__main__':
-    social_network.run(debug=True)

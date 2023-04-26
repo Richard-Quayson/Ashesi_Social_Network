@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/main.dart';
 import 'RegisterStudentForm.dart';
+import 'TestUsersList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
@@ -41,7 +42,7 @@ class _LoginFormState extends State<LoginForm> {
       print(jsonResponse);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => UserList()),
+        MaterialPageRoute(builder: (context) => TestUserList()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
