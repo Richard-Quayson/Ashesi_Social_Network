@@ -37,7 +37,32 @@ class UserProfile extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.15,
+                child: Text(
+                  'Profile Image:',
+                  style: TextStyle(
+                    color: Colors.blue.shade400,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.2,
+                child: const CircleAvatar(
+                  backgroundImage:
+                      AssetImage(
+                        'assets/images/user2.png'),
+                  radius: 200,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 30),
+          Row(
+            children: [
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.15,
                 child: Text(
                   'Student ID:',
@@ -48,7 +73,7 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: Text(
                   student_id,
@@ -60,10 +85,10 @@ class UserProfile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 30),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.15,
                 child: Text(
                   'First Name:',
@@ -74,7 +99,7 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: Text(
                   firstname,
@@ -86,10 +111,10 @@ class UserProfile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 30),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.15,
                 child: Text(
                   'Last Name:',
@@ -100,7 +125,7 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: Text(
                   lastname,
@@ -112,10 +137,10 @@ class UserProfile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 30),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.15,
                 child: Text(
                   'Email:',
@@ -126,7 +151,7 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: Text(
                   email,
@@ -138,10 +163,10 @@ class UserProfile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 30),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.15,
                 child: Text(
                   'Date of Birth:',
@@ -152,7 +177,7 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: Text(
                   '${dob.day}/${dob.month}/${dob.year}',
@@ -164,10 +189,10 @@ class UserProfile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 30),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.15,
                 child: Text(
                   'Major:',
@@ -178,7 +203,7 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: Text(
                   major,
@@ -190,10 +215,10 @@ class UserProfile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 30),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.15,
                 child: Text(
                   'Campus Resident:',
@@ -204,7 +229,7 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: Text(
                   campus_resident ? 'Yes' : 'No',
@@ -216,10 +241,10 @@ class UserProfile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 30),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.15,
                 child: Text(
                   'Favorite Food:',
@@ -230,7 +255,7 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: Text(
                   best_food,
@@ -242,10 +267,10 @@ class UserProfile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 30),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.15,
                 child: Text(
                   'Favorite Movie:',
@@ -256,7 +281,7 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: Text(
                   best_movie,

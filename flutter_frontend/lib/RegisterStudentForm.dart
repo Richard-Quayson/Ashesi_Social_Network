@@ -31,61 +31,57 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement registration logic
-      print('Registering with Student ID: $_studentID');
-      print('First Name: $_firstName');
-      print('Last Name: $_lastName');
-      print('Email: $_email');
-      print('Date of Birth: ${_getDateOfBirth()}');
-      print('Major: $_major');
-      print('Campus Resident: $_isCampusResident');
-      print('Best Food: $_bestFood');
-      print('Best Movie: $_bestMovie');
-      // print('Profile Image: $_profileImage');
-    }
 
-    _formKey.currentState!.save();
-    final path = "https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/profile/create/";
-    final response = await http.post(
-      Uri.parse(path),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: jsonEncode({
-        'student_id': _studentID,
-        'firstname': _firstName,
-        'lastname': _lastName,
-        'email': _email,
-        'dob': _getDateOfBirth()!,
-        'major': _major,
-        'campus_resident': _isCampusResident.toString(),
-        'best_food': _bestFood,
-        'best_movie': _bestMovie,
-        // 'profile_image': _profileImage,
-      }),
-    );
-
-    if (response.statusCode == 201) {
-      _formKey.currentState!.reset();
-      // registration successful, navigate to login page
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginForm()),
+      _formKey.currentState!.save();
+      final path = "https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/profile/create/";
+      final response = await http.post(
+        Uri.parse(path),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          'student_id': _studentID,
+          'firstname': _firstName,
+          'lastname': _lastName,
+          'email': _email,
+          'dob': _getDateOfBirth()!,
+          'major': _major,
+          'campus_resident': _isCampusResident,
+          'best_food': _bestFood,
+          'best_movie': _bestMovie,
+          // 'profile_image': _profileImage,
+        }),
       );
+
+      if (response.statusCode == 201) {
+        _formKey.currentState!.reset();
+        // registration successful, navigate to login page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginForm()),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("User registered successfully!"),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response.body),
+          ),
+        );
+      }
+    }
+    else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Form submitted successfully!"),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response.body),
+          content: Text("Please fill in all required fields!"),
         ),
       );
     }
-  }
+  } 
 
   String? _getDateOfBirth() {
     final dateOfBirth = _dateOfBirth.text.trim();

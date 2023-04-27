@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/SideNavigationBar.dart';
-import 'package:flutter_frontend/UserProfile.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'SearchBar.dart';
 import 'SideNavigationBar.dart';
+import 'UserProfile.dart';
 
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class UserList extends StatefulWidget {
   const UserList({Key? key}) : super(key: key);
@@ -14,8 +13,11 @@ class UserList extends StatefulWidget {
   _UserListState createState() => _UserListState();
 }
 
+
 class _UserListState extends State<UserList> {
   late List<Map<String, dynamic>> users = [];
+  bool isUserProfileClicked = false;
+  late Map<String, dynamic> selectedUser;
 
   @override
   void initState() {
@@ -24,8 +26,9 @@ class _UserListState extends State<UserList> {
   }
 
   Future<void> fetchUsers() async {
-    final response =
-        await http.get(Uri.parse('https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/profile/view/'));
+    final response = await http.get(Uri.parse(
+        'https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/profile/view/'
+      ));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -37,7 +40,7 @@ class _UserListState extends State<UserList> {
   }
 
   DateTime parseDate(String dateString) {
-    final parts = dateString.split('/');
+    final parts = dateString.split('-');
     if (parts.length != 3) {
       throw FormatException('Invalid date format $dateString');
     }
@@ -87,23 +90,10 @@ class _UserListState extends State<UserList> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => UserProfile(
-                                              student_id: user['student_id'],
-                                              firstname: user['firstname'],
-                                              lastname: user['lastname'],
-                                              email: user['email'],
-                                              dob: parseDate(user['dob']),
-                                              major: user['major'],
-                                              campus_resident:
-                                                  user['campus_resident'],
-                                              best_food: user['best_food'],
-                                              best_movie: user['best_movie'],
-                                            ),
-                                          ),
-                                        );
+                                        setState(() {
+                                          isUserProfileClicked = true;
+                                          selectedUser = user;
+                                        });
                                       },
                                       child: MouseRegion(
                                         cursor: SystemMouseCursors.click,
@@ -117,7 +107,7 @@ class _UserListState extends State<UserList> {
                                                 backgroundImage:
                                                     // AssetImage(user['profile_image']),
                                                     AssetImage(
-                                                        'assets/images/user3.png'),
+                                                        'assets/images/user2.png'),
                                                 radius: 30,
                                               ),
                                               const SizedBox(width: 16),
@@ -176,117 +166,61 @@ class _UserListState extends State<UserList> {
                 ],
               ),
             ),
+            if (isUserProfileClicked) 
+              Expanded(
+                child: Container(
+                  color: Colors.grey.shade200,
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        UserProfile(
+                          student_id: selectedUser['student_id'],
+                          firstname: selectedUser['firstname'],
+                          lastname: selectedUser['lastname'],
+                          email: selectedUser['email'],
+                          dob: parseDate(selectedUser['dob']),
+                          major: selectedUser['major'],
+                          campus_resident: selectedUser['campus_resident'],
+                          best_food: selectedUser['best_food'],
+                          best_movie: selectedUser['best_movie'],
+                        ),
+                        const SizedBox(height: 200),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              isUserProfileClicked = false;
+                            });
+                          },
+                          child: const Text('Close'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+            if (!isUserProfileClicked)
+              Expanded(
+                child: Container(
+                  color: Colors.grey.shade300,
+                  padding: const EdgeInsets.all(20),
+                  child: const Center(
+                    child: Text(
+                      'Select a user profile to view its details!',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   final screenWidth = MediaQuery.of(context).size.width;
-  //   final screenHeight = MediaQuery.of(context).size.height;
-
-  //   return Scaffold(
-  //     body: SafeArea(
-  //       child: Row(
-  //         children: [
-  //           const ActiveUsersSideNavigationBar(),
-  //           const VerticalDivider(thickness: 1, width: 1),
-  //           Expanded(
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Padding(
-  //                   padding: EdgeInsets.only(
-  //                     top: screenHeight * 0.02,
-  //                     left: screenWidth * 0.01,
-  //                   ),
-  //                   child: const SearchBar(),
-  //                 ),
-  //                 const SizedBox(height: 10),
-  //                 Expanded(
-  //                   child: ListView.builder(
-  //                     itemCount: users.length,
-  //                     itemBuilder: (BuildContext context, int index) {
-  //                       final user = users[index];
-  //                       return Padding(
-  //                         padding: const EdgeInsets.symmetric(
-  //                             horizontal: 20, vertical: 10),
-  //                         child: Row(
-  //                           crossAxisAlignment: CrossAxisAlignment.start,
-  //                           children: [
-  //                             Column(
-  //                               children: [
-  //                                 GestureDetector(
-  //                                   onTap: () {
-  //                                     Navigator.push(
-  //                                       context,
-  //                                       MaterialPageRoute(
-  //                                         builder: (context) =>
-  //                                             (const UserList()),
-  //                                       ),
-  //                                     );
-  //                                   },
-  //                                   child: MouseRegion(
-  //                                     cursor: SystemMouseCursors.click,
-  //                                     child: Container(
-  //                                       padding: const EdgeInsets.all(5),
-  //                                       child: Row(
-  //                                         crossAxisAlignment:
-  //                                             CrossAxisAlignment.center,
-  //                                         children: [
-  //                                           const CircleAvatar(
-  //                                             backgroundImage:
-  //                                                 // AssetImage(user['profile_image']),
-  //                                                 AssetImage(
-  //                                                     'assets/images/user1.png'),
-  //                                             radius: 30,
-  //                                           ),
-  //                                           const SizedBox(width: 16),
-  //                                           Column(
-  //                                             crossAxisAlignment:
-  //                                                 CrossAxisAlignment.start,
-  //                                             children: [
-  //                                               Text(
-  //                                                 user['firstname'] +
-  //                                                     ' ' +
-  //                                                     user['lastname'],
-  //                                                 style: TextStyle(
-  //                                                   fontWeight: FontWeight.bold,
-  //                                                   fontSize: 18,
-  //                                                   color: Colors.blue.shade700,
-  //                                                 ),
-  //                                               ),
-  //                                               Text(
-  //                                                 user['major'],
-  //                                                 style: TextStyle(
-  //                                                   fontSize: 16,
-  //                                                   color: Colors.blue.shade300,
-  //                                                 ),
-  //                                               ),
-  //                                             ],
-  //                                           ),
-  //                                         ],
-  //                                       ),
-  //                                     ),
-  //                                   ),
-  //                                 ),
-  //                               ],
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       );
-  //                     },
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-// }

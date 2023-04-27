@@ -265,6 +265,7 @@ def retrieve_feed():
     
     # idea: get the value the user entered in the text field
     value = request.args.get("value")
+    print(value)
     posts = POSTS_COLLECTION.get()
     post_data = list()
     for post in posts:
@@ -277,7 +278,6 @@ def retrieve_feed():
     if not value:
         # sort the list based on the time they were posted
         post_data.sort(key=get_date, reverse=True)
-        
         return jsonify(post_data)
     
     # determine the type of the value

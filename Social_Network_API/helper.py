@@ -4,6 +4,7 @@ from re import search
 from flask import Flask, jsonify
 from flask_mail import Mail, Message
 from firebase_admin import credentials, firestore, initialize_app
+from flask_cors import CORS
 
 
 # initialise Firestore database
@@ -17,6 +18,7 @@ POSTS_COLLECTION = database.collection("posts")
 
 # creating flask app
 social_network = Flask(__name__)
+CORS(social_network)
 
 # initialise Flask-Mail
 social_network.config['MAIL_SERVER'] = 'smtp.gmail.com'

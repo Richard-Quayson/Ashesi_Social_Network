@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/SideNavigationBar.dart';
-import 'SearchBar.dart';
-import 'SideNavigationBar.dart';
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'PostForm.dart';
+import 'SearchBar.dart';
+import 'SideNavigationBar.dart';
+import 'Post.dart';
+
 
 class Feed extends StatefulWidget {
   const Feed({Key? key}) : super(key: key);
@@ -13,9 +14,11 @@ class Feed extends StatefulWidget {
   _FeedState createState() => _FeedState();
 }
 
+
 class _FeedState extends State<Feed> {
   late List<Map<String, dynamic>> posts = [];
-  // late Map<String, dynamic> user = {};
+  bool isPostClicked = false;
+  late Map<String, dynamic> selectedPost;
 
   @override
   void initState() {
@@ -24,8 +27,9 @@ class _FeedState extends State<Feed> {
   }
 
   Future<void> fetchPosts() async {
-    final response =
-        await http.get(Uri.parse('https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/feed/'));
+    final response = await http.get(Uri.parse(
+      'https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/feed/'
+    ));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -76,12 +80,10 @@ class _FeedState extends State<Feed> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const Feed(),
-                                          ),
-                                        );
+                                          setState(() {
+                                          isPostClicked = true;
+                                          selectedPost = post;
+                                        });
                                       },
                                       child: MouseRegion(
                                         cursor: SystemMouseCursors.click,
@@ -95,7 +97,7 @@ class _FeedState extends State<Feed> {
                                                 backgroundImage:
                                                     // AssetImage(user['profile_image']),
                                                     AssetImage(
-                                                        'assets/images/user3.png'),
+                                                        'assets/images/user1.png'),
                                                 radius: 30,
                                               ),
                                               const SizedBox(width: 16),
@@ -116,7 +118,7 @@ class _FeedState extends State<Feed> {
                                                         ),
                                                       ),
                                                       const SizedBox(
-                                                          width: 150),
+                                                          width: 300),
                                                       Text(
                                                         post['date_updated'],
                                                         style: const TextStyle(
@@ -157,8 +159,65 @@ class _FeedState extends State<Feed> {
                 ],
               ),
             ),
+            if (isPostClicked)
+              Expanded(
+                child: Container(
+                  color: Colors.grey.shade200,
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Post(
+                          name: selectedPost['name'],
+                          email: selectedPost['email'],
+                          description: selectedPost['description'],
+                          date_created: selectedPost['date_created'],
+                          date_updated: selectedPost['date_updated'],
+                        ),
+                        const SizedBox(height: 200),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              isPostClicked = false;
+                            });
+                          },
+                          child: const Text('Close'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+            if (!isPostClicked)
+              Expanded(
+                child: Container(
+                  color: Colors.grey.shade300,
+                  padding: const EdgeInsets.all(20),
+                  child: const Center(
+                    child: Text(
+                      'Select a post to view its content!',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PostForm()),
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

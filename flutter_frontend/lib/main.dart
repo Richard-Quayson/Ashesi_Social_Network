@@ -3,8 +3,9 @@ import 'package:flutter_frontend/PostForm.dart';
 import 'package:flutter_frontend/SearchBar.dart';
 import 'TopNavigationBar.dart';
 import 'SideNavigationBar.dart';
-import 'UserList.dart';
+import 'UsersList.dart';
 import 'Feed.dart';
+import 'UserList.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,8 +23,9 @@ class MyApp extends StatelessWidget {
         textSelectionTheme:
             const TextSelectionThemeData(cursorColor: Colors.black),
       ),
-      home: Scaffold(
+      home: const Scaffold(
         body: TopNavBar(),
+        // body: PostForm(),
       ),
     );
   }

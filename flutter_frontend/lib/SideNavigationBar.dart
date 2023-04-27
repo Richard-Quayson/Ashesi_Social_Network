@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'UserList.dart';
-import 'Feed.dart';
+import 'package:flutter_frontend/LoginForm.dart';
+import 'package:flutter_frontend/UserList.dart';
+import 'package:flutter_frontend/Feed.dart';
 
 
 class ActiveUsersSideNavigationBar extends StatelessWidget {
@@ -26,7 +27,7 @@ class ActiveUsersSideNavigationBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserList()),
+                    MaterialPageRoute(builder: (context) => const UserList()),
                   );
                 },
                 child: Column(
@@ -60,7 +61,7 @@ class ActiveUsersSideNavigationBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Feed()),
+                    MaterialPageRoute(builder: (context) => const Feed()),
                   );
                 },
                 child: Column(
@@ -97,7 +98,7 @@ class ActiveUsersSideNavigationBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserList()),
+                    MaterialPageRoute(builder: (context) => const UserList()),
                   );
                 },
                 child: Column(
@@ -159,7 +160,10 @@ class ActiveUsersSideNavigationBar extends StatelessWidget {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    // Add your logout logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginForm()),
+                    );
                   },
                 ),
               ),
@@ -199,7 +203,7 @@ class ActivePostsSideNavigationBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserList()),
+                    MaterialPageRoute(builder: (context) => const UserList()),
                   );
                 },
                 child: Column(
@@ -233,7 +237,7 @@ class ActivePostsSideNavigationBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Feed()),
+                    MaterialPageRoute(builder: (context) => const Feed()),
                   );
                 },
                 child: Column(
@@ -270,7 +274,7 @@ class ActivePostsSideNavigationBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserList()),
+                    MaterialPageRoute(builder: (context) => const UserList()),
                   );
                 },
                 child: Column(
@@ -332,7 +336,10 @@ class ActivePostsSideNavigationBar extends StatelessWidget {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    // Add your logout logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginForm()),
+                    );
                   },
                 ),
               ),

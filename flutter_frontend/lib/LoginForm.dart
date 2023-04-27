@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_frontend/UserList.dart';
+import 'package:flutter_frontend/UsersList.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/main.dart';
@@ -20,32 +21,26 @@ class _LoginFormState extends State<LoginForm> {
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       // TODO: Implement login logic
-      print('Logging in with Student ID: $_studentID');
-    }
 
     _formKey.currentState!.save();
     final path =
         "https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/profile/view?student_id=$_studentID";
     final response = await http.get(
-      Uri.parse(path),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
+      Uri.parse(path)
     );
 
     if (response.statusCode == 200) {
 
       _formKey.currentState!.reset();
       final jsonResponse = jsonDecode(response.body);
-      print(jsonResponse);
+      // print(jsonResponse);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => UserList()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Form submitted successfully!"),
+          content: Text("Access granted successfully!"),
         ),
       );
     } else {
@@ -55,6 +50,14 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
     }
+  }
+  else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Please enter the student's ID!"),
+      ),
+    );
+  }
   }
 
   @override

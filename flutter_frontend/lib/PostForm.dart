@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_frontend/Feed.dart';
-import 'package:flutter_frontend/UserList.dart';
+import 'package:flutter_frontend/UsersList.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/main.dart';
@@ -21,46 +21,53 @@ class _PostFormState extends State<PostForm> {
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      print("Email: $_email");
-      print("Description: $_description");
-    }
+      // print("Email: $_email");
+      // print("Description: $_description");
 
-    _formKey.currentState!.save();
-    final path = "https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/create/";
-    final response = await http.post(
-      Uri.parse(path),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: jsonEncode({
-        'email': _email,
-        'description': _description,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      _formKey.currentState!.reset();
-      final jsonResponse = jsonDecode(response.body);
-      print(jsonResponse);
-      print("Form submitted successfully!");
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Feed()),
+      _formKey.currentState!.save();
+      final path = "https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/create/";
+      final response = await http.post(
+        Uri.parse(path),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          'email': _email,
+          'description': _description,
+        }),
       );
+
+      if (response.statusCode == 200) {
+        _formKey.currentState!.reset();
+        final jsonResponse = jsonDecode(response.body);
+        print(jsonResponse);
+        print("Form submitted successfully!");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Feed()),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Post made successfully!"),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response.body),
+          ),
+        );
+      }
+    }
+    else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Post made successfully!"),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response.body),
+          content: Text("Please fill in all required fields!"),
         ),
       );
     }
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
