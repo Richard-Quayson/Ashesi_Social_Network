@@ -1,4 +1,6 @@
 # Ashesi_Social_Network
+### [Flutter app](https://social-network-2c0b3.web.app/)
+### [Deployed API](https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/feed)
 
 The Ashesi_Social_Network project provide an API that uses a firebase database, and a Frontend web application in Flutter.
 The API provides functions that allow users to register onto a social media application, make posts
@@ -75,6 +77,7 @@ This folder contains a Flutter project that creates a web application to consum 
 files have been defined in the lib folder. The flutter project has been linked to the deployed http version of the API and can be tested
 by running the flutter application in the terminal using any browser as an emulator.
 
+The flutter implementation has been deployed to firebase [here.](https://social-network-2c0b3.web.app/)
 
 ## Program Overview:
 For an overview on the project, check the file task_instructions.pdf in the main tree. Also, you can check tests performed on the API in the test_result.pdf in the main tree.
@@ -87,6 +90,7 @@ Future updates will:
 - [x] Deploy flutter application.
 - [x] Improve validation of student's information.
 - [ ] Integrate filter system for user and post with search bar created in the flutter project.
+- [ ] Implement favourites and profile pages on the dashboard after signin.
 - [ ] Provide endpoints and corresponding dart files for tracking read and unread posts by users 🙂.
 - [ ] Improve runtime filter for retrieving user and post information.
 
