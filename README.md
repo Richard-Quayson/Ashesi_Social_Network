@@ -84,7 +84,7 @@ Find the Figma design for the Flutter [here.](https://www.figma.com/file/nra1z5S
 
 ## Future updates:
 Future updates will:
-- [ ] Deploy flutter application.
+- [x] Deploy flutter application.
 - [x] Improve validation of student's information.
 - [ ] Integrate filter system for user and post with search bar created in the flutter project.
 - [ ] Provide endpoints and corresponding dart files for tracking read and unread posts by users 🙂.
