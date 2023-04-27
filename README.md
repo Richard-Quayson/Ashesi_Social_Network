@@ -1,6 +1,8 @@
 # Ashesi_Social_Network
-### [Flutter app](https://social-network-2c0b3.web.app/)
-### [Deployed API](https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/feed)
+
+#### [Figma UI](https://www.figma.com/file/nra1z5S6kGQLcS20cCAbMC/Ashesi-Social-Network-UI?node-id=0%3A1&t=CMyyox0muG4z2tvG-1)
+#### [Flutter app](https://social-network-2c0b3.web.app/)
+#### [Deployed API](https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/feed)
 
 The Ashesi_Social_Network project provide an API that uses a firebase database, and a Frontend web application in Flutter.
 The API provides functions that allow users to register onto a social media application, make posts
@@ -51,7 +53,7 @@ the functionaities listed above. It uses a firebase database for storing informa
 #### Running the Flask version
 To run the program, move into the Social_Network_API folder in your terminal and set up a virtual environment. Install the packages 
 in the requirements.txt file, activate the virtual environment,  and run the app.py file. You can test the API functionalities using 
-any HTTP client like [Postman](https://www.postman.com/)
+any HTTP client like [Postman.](https://www.postman.com/)
 
 ```Python
 
@@ -70,7 +72,7 @@ the functionaities listed above. It uses a firebase database for storing informa
 ```
 
 The http version has been deployed to google cloud as an http function and can be tested using any HTTP client like 
-[Postman](https://www.postman.com/) at this [address](https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/feed)
+[Postman](https://www.postman.com/) at this [address.](https://us-central1-ashesi-social-network-384820.cloudfunctions.net/ashesi_social_network_2996/users/posts/feed)
 
 ### flutter_frontend
 This folder contains a Flutter project that creates a web application to consum the API defined in the Social_Network_API. The dart
@@ -90,6 +92,7 @@ Future updates will:
 - [x] Deploy flutter application.
 - [x] Improve validation of student's information.
 - [ ] Integrate filter system for user and post with search bar created in the flutter project.
+- [ ] Add a storage bucket to firebase database to allow for profile and post image uploads.
 - [ ] Implement favourites and profile pages on the dashboard after signin.
 - [ ] Provide endpoints and corresponding dart files for tracking read and unread posts by users 🙂.
 - [ ] Improve runtime filter for retrieving user and post information.
