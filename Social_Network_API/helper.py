@@ -4,11 +4,12 @@ from re import search
 from flask import Flask, jsonify
 from flask_mail import Mail, Message
 from firebase_admin import credentials, firestore, initialize_app
+from flask_cors import CORS
 
 
 # initialise Firestore database
 cred = credentials.Certificate("key.json")
-app = initialize_app(cred)
+initialize_app(cred)
 database = firestore.client()
 
 # firebase collection reference
@@ -16,15 +17,16 @@ USERS_COLLECTION = database.collection("users")
 POSTS_COLLECTION = database.collection("posts")
 
 # creating flask app
-social_network = Flask(__name__)
+app = Flask(__name__)
+CORS(app)
 
 # initialise Flask-Mail
-social_network.config['MAIL_SERVER'] = 'smtp.gmail.com'
-social_network.config['MAIL_PORT'] = 465
-social_network.config['MAIL_USERNAME'] = 'projectile.webgeeks@gmail.com'
-social_network.config['MAIL_PASSWORD'] = 'wnayotwsrpqlalee'
-social_network.config['MAIL_USE_SSL'] = True
-mail = Mail(social_network)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'projectile.webgeeks@gmail.com'
+app.config['MAIL_PASSWORD'] = 'wnayotwsrpqlalee'
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 # first year group in Ashesi
 FIRST_YEAR_GROUP = 2002

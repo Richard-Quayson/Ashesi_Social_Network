@@ -6,7 +6,7 @@ from firebase_admin import storage
 # import helper methods and other essential data
 from helper import (
     FIRST_YEAR_GROUP, USERS_COLLECTION, POSTS_COLLECTION,
-    social_network,
+    app,
     
     valid_request_body, valid_student_id, valid_student_info,
     valid_name, valid_dob, valid_major, valid_email, valid_post,
@@ -17,7 +17,7 @@ from helper import (
 
 # _______________________________________________________________________________________________
 # REGISTER A STUDENT AS A USER
-@social_network.route("/users/profile/create/", methods=["POST"])
+@app.route("/users/profile/create/", methods=["POST"])
 def register_user():
     
     # validate student details in request
@@ -35,7 +35,7 @@ def register_user():
  
 # ______________________________________________________________________________________________
 # EDIT STUDENT PROFILE
-@social_network.route("/users/profile/edit/<student_id>/", methods=["PATCH"])
+@app.route("/users/profile/edit/<student_id>/", methods=["PATCH"])
 def edit_profile(student_id):
     
     # ensure that the student_id specified is valid
@@ -94,7 +94,7 @@ def edit_profile(student_id):
 
 # _______________________________________________________________________________________________
 # VIEW STUDENT PROFILE
-@social_network.route("/users/profile/view/", methods=["GET"])
+@app.route("/users/profile/view/", methods=["GET"])
 def get_student_profile():
     """uses all specified arguments (attributes of student) parsed for filtering
     matching students and returns the result. If no attribute is parsed, it retrieves
@@ -229,7 +229,7 @@ def get_student_profile():
 
 # _________________________________________________________________________________________________
 # CREATE POST
-@social_network.route("/users/posts/create/", methods=["POST"])
+@app.route("/users/posts/create/", methods=["POST"])
 def create_post():
     
     
@@ -255,7 +255,7 @@ def create_post():
 
 # ________________________________________________________________________________________________
 # VIEW FEED
-@social_network.route("/users/posts/feed/", methods=["GET"])
+@app.route("/users/posts/feed/", methods=["GET"])
 def retrieve_feed():
     
     # attributes to be used include:
@@ -347,7 +347,7 @@ def retrieve_feed():
 
 # ________________________________________________________________________________________________
 # ADD POST TO FAVOURITES
-@social_network.route("/users/posts/favourites/", methods=["POST", "DELETE"])
+@app.route("/users/posts/favourites/", methods=["POST", "DELETE"])
 def favourites():
 
     post = request.args.get("post_id")
@@ -373,7 +373,7 @@ def favourites():
 
 # ________________________________________________________________________________________________
 # TEST IMAGE UPLOAD
-@social_network.route("/users/posts/image/", methods=["POST"])
+@app.route("/users/posts/image/", methods=["POST"])
 def upload_image():
     # Get the user ID from the request data
     user_id = request.form.get('user_id')
@@ -395,4 +395,4 @@ def upload_image():
 
 
 if __name__=='__main__':
-    social_network.run(debug=True)
+    app.run(debug=True)
