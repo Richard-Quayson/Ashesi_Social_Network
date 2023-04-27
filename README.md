@@ -80,12 +80,12 @@ by running the flutter application in the terminal using any browser as an emula
 For an overview on the project, check the file task_instructions.pdf in the main tree. Also, you can check tests performed on the API in the test_result.pdf in the main tree.
 
 ## UI for Flutter:
-Find the Figma design for the Flutter [here.]()
+Find the Figma design for the Flutter [here.](https://www.figma.com/file/nra1z5S6kGQLcS20cCAbMC/Ashesi-Social-Network-UI?node-id=0%3A1&t=CMyyox0muG4z2tvG-1)
 
 ## Future updates:
 Future updates will:
 - [ ] Deploy flutter application.
-- [ ] Improve validation of student's information.
+- [x] Improve validation of student's information.
 - [ ] Integrate filter system for user and post with search bar created in the flutter project.
 - [ ] Provide endpoints and corresponding dart files for tracking read and unread posts by users 🙂.
 - [ ] Improve runtime filter for retrieving user and post information.
